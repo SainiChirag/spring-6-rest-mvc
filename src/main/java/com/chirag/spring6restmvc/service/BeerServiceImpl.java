@@ -68,4 +68,74 @@ public class BeerServiceImpl implements BeerService {
     public List<Beer> listBeers() {
         return new ArrayList<>(beerMap.values());
     }
+
+    @Override
+    public Beer addBeer(Beer beer) {
+        Beer newBeer = Beer.builder()
+                .id(UUID.randomUUID())
+                .version(beer.getVersion())
+                .beerName(beer.getBeerName())
+                .beerStyle(beer.getBeerStyle())
+                .quantityOnHand(beer.getQuantityOnHand())
+                .upc(beer.getUpc())
+                .price(beer.getPrice())
+                .createdDate(LocalDateTime.now())
+                .updatedDate(LocalDateTime.now())
+                .build();
+
+        System.out.println("I am here");
+
+
+        this.beerMap.put(newBeer.getId(), newBeer);
+        return newBeer;
+    }
+
+    @Override
+    public Beer updateBeer(UUID id, Beer newBeer) {
+        Beer existing = beerMap.get(id);
+        existing.setBeerName(newBeer.getBeerName());
+        existing.setVersion(newBeer.getVersion());
+        existing.setBeerStyle(newBeer.getBeerStyle());
+        existing.setUpc(newBeer.getUpc());
+        existing.setQuantityOnHand(newBeer.getQuantityOnHand());
+        existing.setPrice(newBeer.getPrice());
+        existing.setUpdatedDate(LocalDateTime.now());
+        beerMap.put(id, existing);
+        return existing;
+
+    }
+
+    @Override
+    public void deleteBeer(UUID id) {
+        beerMap.remove(id);
+    }
+
+    @Override
+    public Beer patchBeer(UUID beerId, Beer newBeer) {
+        Beer foundBeer = beerMap.get(beerId);
+        if (newBeer.getVersion() != null ) {
+            foundBeer.setVersion(newBeer.getVersion());
+        }
+        if (newBeer.getBeerName() != null ) {
+            foundBeer.setBeerName(newBeer.getBeerName());
+        }
+        if (newBeer.getBeerStyle() != null ) {
+            foundBeer.setBeerStyle(newBeer.getBeerStyle());
+        }
+        if (newBeer.getUpc() != null ) {
+            foundBeer.setUpc(newBeer.getUpc());
+        }
+        if (newBeer.getQuantityOnHand() != null ) {
+            foundBeer.setQuantityOnHand(newBeer.getQuantityOnHand());
+        }
+        if (newBeer.getPrice() != null ) {
+            foundBeer.setPrice(newBeer.getPrice());
+        }
+        foundBeer.setUpdatedDate(LocalDateTime.now());
+        beerMap.put(beerId, foundBeer);
+        return foundBeer;
+
+    }
+
+
 }
