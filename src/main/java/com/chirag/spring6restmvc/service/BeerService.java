@@ -1,21 +1,21 @@
 package com.chirag.spring6restmvc.service;
 
-import com.chirag.spring6restmvc.model.Beer;
+import com.chirag.spring6restmvc.model.BeerDTO;
 
 import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
 
 public interface BeerService {
-    Optional<Beer> getBeerById(UUID id);
+    Optional<BeerDTO> getBeerById(UUID id);
 
-    List<Beer> listBeers();
+    List<BeerDTO> listBeers();
 
-    Beer addBeer(Beer beer);
+    BeerDTO addBeer(BeerDTO beer);
 
-    Beer updateBeer(UUID id, Beer newBeer);
+    BeerDTO updateBeer(UUID id, BeerDTO newBeer);
 
     void deleteBeer(UUID id);
 
-    Beer patchBeer(UUID beerId, Beer newBeer);
+    BeerDTO patchBeer(UUID beerId, BeerDTO newBeer);
 }

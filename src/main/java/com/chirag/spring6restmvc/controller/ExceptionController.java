@@ -1,6 +1,6 @@
 package com.chirag.spring6restmvc.controller;
 
-import org.apache.coyote.Response;
+import com.chirag.spring6restmvc.exception.UnknownException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.ControllerAdvice;

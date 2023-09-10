@@ -1,4 +1,4 @@
-package com.chirag.spring6restmvc.controller;
+package com.chirag.spring6restmvc.exception;
 
 public class NotFoundException extends RuntimeException{
     public NotFoundException() {
