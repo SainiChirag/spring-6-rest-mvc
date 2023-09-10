@@ -23,9 +23,10 @@ public class BeerController {
     private final BeerService beerService;
 
     @RequestMapping(method = RequestMethod.GET, value = "/{beerId}" )
-    public Beer getBeerById(@PathVariable("beerId") UUID id) {
+    public ResponseEntity<Beer> getBeerById(@PathVariable("beerId") UUID id) {
         log.debug("Get beer by Id - in controller");
-        return  beerService.getBeerById(id);
+        Beer returnBeer = beerService.getBeerById(id).orElseThrow(UnknownException::new);
+        return new ResponseEntity<>(returnBeer,HttpStatus.OK);
     }
 
     @RequestMapping(method = RequestMethod.GET)
@@ -46,10 +47,10 @@ public class BeerController {
     @PutMapping(value = "/{beerId}")
     public ResponseEntity<Beer> updateById(@RequestBody Beer beer, @PathVariable("beerId") UUID id) {
 
-        Beer searchedBeer = beerService.getBeerById(id);
-        if (searchedBeer == null ) { // beer not found
-            return new ResponseEntity<Beer>(HttpStatus.NOT_FOUND);
-        }
+        Beer searchedBeer = beerService.getBeerById(id).orElseThrow(NotFoundException::new);
+//        if (searchedBeer == null ) { // beer not found
+//            throw new NotFoundException();
+//        }
         // beer found
         searchedBeer = beerService.updateBeer(id, beer);
 
@@ -59,12 +60,17 @@ public class BeerController {
     }
 
 
+    @ExceptionHandler(NotFoundException.class)
+    public ResponseEntity<String> handleNotFoundException() {
+        return new ResponseEntity<String>(HttpStatus.NOT_FOUND);
+    }
+
     @DeleteMapping(value = "/{beerId}")
     public ResponseEntity<Beer> deleteBeerById(@PathVariable("beerId") UUID beerId){
-        Beer searchedBeer = beerService.getBeerById(beerId);
-        if (searchedBeer == null ) { // beer not found
-            return new ResponseEntity<Beer>(HttpStatus.NOT_FOUND);
-        }
+        Beer searchedBeer = beerService.getBeerById(beerId).orElseThrow(NotFoundException::new);
+//        if (searchedBeer == null ) { // beer not found
+//          throw new NotFoundException();
+//        }
         beerService.deleteBeer(beerId);
 
         return new ResponseEntity<Beer>( HttpStatus.OK);
@@ -74,10 +80,10 @@ public class BeerController {
     @PatchMapping(value = "/{beerId}")
     public ResponseEntity<Beer> patchBeerById(@RequestBody Beer beer, @PathVariable("beerId") UUID id) {
 
-        Beer searchedBeer = beerService.getBeerById(id);
-        if (searchedBeer == null ) { // beer not found
-            return new ResponseEntity<Beer>(HttpStatus.NOT_FOUND);
-        }
+        Beer searchedBeer = beerService.getBeerById(id).orElseThrow(NotFoundException::new);
+//        if (searchedBeer == null ) { // beer not found
+//            throw new NotFoundException();
+//        }
         // beer found
         searchedBeer = beerService.patchBeer(id, beer);
 
