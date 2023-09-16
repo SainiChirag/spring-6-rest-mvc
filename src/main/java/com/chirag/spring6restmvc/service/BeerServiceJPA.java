@@ -37,6 +37,8 @@ public class BeerServiceJPA implements BeerService {
 
     @Override
     public BeerDTO addBeer(BeerDTO beer) {
+        beer.setCreatedDate(LocalDateTime.now());
+        beer.setUpdatedDate(LocalDateTime.now());
         return beerMapper.beerToBeerDto(beerRepository.save(beerMapper.beerDtoToBeer(beer)));
     }
 

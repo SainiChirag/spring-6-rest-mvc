@@ -14,7 +14,7 @@ import java.util.UUID;
 public class BeerDTO {
     private UUID id;
     private Integer version;
-    @NotNull @NotBlank
+    @NotNull(message = "Cannot be null bro") @NotBlank (message = "Cannot be blank bro")
     private String beerName;
     private BeerStyle beerStyle;
     private String upc;
