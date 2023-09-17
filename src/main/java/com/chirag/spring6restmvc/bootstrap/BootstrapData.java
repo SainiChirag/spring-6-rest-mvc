@@ -2,9 +2,7 @@ package com.chirag.spring6restmvc.bootstrap;
 
 import com.chirag.spring6restmvc.entity.Beer;
 import com.chirag.spring6restmvc.entity.Customer;
-import com.chirag.spring6restmvc.model.BeerDTO;
 import com.chirag.spring6restmvc.model.BeerStyle;
-import com.chirag.spring6restmvc.model.CustomerDTO;
 import com.chirag.spring6restmvc.repository.BeerRepository;
 import com.chirag.spring6restmvc.repository.CustomerRepository;
 import lombok.RequiredArgsConstructor;
@@ -13,10 +11,6 @@ import org.springframework.stereotype.Component;
 
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
-import java.util.HashMap;
-import java.util.Map;
-import java.util.UUID;
-
 
 @Component
 @RequiredArgsConstructor
@@ -43,9 +37,6 @@ public class BootstrapData implements CommandLineRunner {
                 .updatedDate(LocalDateTime.now())
                 .build();
 
-
-
-
        Beer beer2 = Beer.builder()
                 .beerName("Corona")
                 .beerStyle(BeerStyle.IPA)
@@ -55,7 +46,6 @@ public class BootstrapData implements CommandLineRunner {
                 .createdDate(LocalDateTime.now())
                 .updatedDate(LocalDateTime.now())
                 .build();
-
 
        Beer beer3 = Beer.builder()
                 .beerName("Galaxy Cat")
@@ -95,6 +85,5 @@ public class BootstrapData implements CommandLineRunner {
         customerRepository.save(customer1);
         customerRepository.save(customer2);
         customerRepository.save(customer3);
-
     }
 }

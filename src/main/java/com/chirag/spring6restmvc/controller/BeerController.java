@@ -4,7 +4,6 @@ import com.chirag.spring6restmvc.exception.NotFoundException;
 import com.chirag.spring6restmvc.exception.UnknownException;
 import com.chirag.spring6restmvc.model.BeerDTO;
 import com.chirag.spring6restmvc.service.BeerService;
-import lombok.AllArgsConstructor;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpHeaders;
@@ -23,7 +22,6 @@ import java.util.UUID;
 public class BeerController {
 
     private final BeerService beerService;
-
     @RequestMapping(method = RequestMethod.GET, value = "/{beerId}" )
     public ResponseEntity<BeerDTO> getBeerById(@PathVariable("beerId") UUID id) {
         log.debug("Get beer by Id - in controller");

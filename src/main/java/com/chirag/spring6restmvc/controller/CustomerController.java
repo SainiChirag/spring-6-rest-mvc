@@ -14,10 +14,10 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 import java.util.UUID;
 
-@RestController
-@RequestMapping("/api/v1/customer")
 @RequiredArgsConstructor
 @Slf4j
+@RestController
+@RequestMapping("/api/v1/customer")
 public class CustomerController {
 
     private final CustomerService customerService;
@@ -32,14 +32,12 @@ public class CustomerController {
         return new ResponseEntity<>(customerDTO, HttpStatus.OK);
     }
 
-
     @PostMapping()
     public ResponseEntity<CustomerDTO> addCustomer(@RequestBody CustomerDTO customerDTO) {
         CustomerDTO savedCustomer = customerService.saveNewCustomer(customerDTO);
         return new ResponseEntity<>(savedCustomer, HttpStatus.CREATED);
     }
 
-    // udpate
     @PutMapping(value = "/{customerId}")
     public ResponseEntity<CustomerDTO> updateCustomer(@RequestBody CustomerDTO customerDTO,
                                                       @PathVariable(name = "customerId") UUID customerId) {
@@ -48,15 +46,18 @@ public class CustomerController {
         return new ResponseEntity<>(HttpStatusCode.valueOf(HttpStatus.OK.value()));
     }
 
-
-    // delete
-
     @DeleteMapping(value = "/{customerId}")
-    public ResponseEntity<CustomerDTO> updateCustomer(@PathVariable(name = "customerId") UUID customerId) {
+    public ResponseEntity<CustomerDTO> deleteCustomer(@PathVariable(name = "customerId") UUID customerId) {
         customerService.getCustomerById(customerId).orElseThrow(NotFoundException::new);
         customerService.deleteCustomerById(customerId);
         return new ResponseEntity<>(HttpStatusCode.valueOf(HttpStatus.OK.value()));
     }
 
-
+    @PatchMapping(value = "/{customerId}")
+    public ResponseEntity<CustomerDTO> patchCustomer(@RequestBody CustomerDTO customerDTO,
+                                                      @PathVariable(name = "customerId") UUID customerId) {
+        customerService.getCustomerById(customerId).orElseThrow(NotFoundException::new);
+        customerService.patchCustomerById(customerId, customerDTO);
+        return new ResponseEntity<>(HttpStatusCode.valueOf(HttpStatus.OK.value()));
+    }
 }
