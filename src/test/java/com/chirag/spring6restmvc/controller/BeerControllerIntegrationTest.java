@@ -23,7 +23,8 @@ import static org.assertj.core.api.Assertions.assertThat;
 
 // TODO Update tests ---- right now the tests are not fully functional -- some of them are failing and have to code a
 // according to specifications
-
+// these tests are more for "Unit testing" the Repository etc functions. THe controller specific tests are present
+// in the Controller Test class
 @SpringBootTest
 class BeerControllerIntegrationTest {
     @Autowired
