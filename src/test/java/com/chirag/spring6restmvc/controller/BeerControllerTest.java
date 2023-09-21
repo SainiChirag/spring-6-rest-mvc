@@ -14,6 +14,7 @@ import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
+import org.springframework.test.web.servlet.MvcResult;
 
 import static org.hamcrest.Matchers.hasSize;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
@@ -21,6 +22,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 
 
 import java.util.Optional;
+import java.util.UUID;
 
 
 import static org.mockito.ArgumentMatchers.any;
@@ -54,7 +56,6 @@ class BeerControllerTest {
     @BeforeEach
     void setup() {
         beerServiceImpl = new BeerServiceImpl();
-        ;
     }
 
     @Test
@@ -104,16 +105,29 @@ class BeerControllerTest {
     }
 
     @Test
+    void testUpdateBeer() throws Exception {
+        BeerDTO beer = beerServiceImpl.listBeers().get(0);
+        given(beerService.updateBeer(any(), any())).willReturn(beer);
+
+        mockMvc.perform(put("/api/v1/beer/", beer.getId())
+                        .accept(MediaType.APPLICATION_JSON)
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(objectMapper.writeValueAsString(beer)));
+               // .andExpect()
+    }
+
+    @Test
     void testCreateBeerNullBeerName() throws Exception {
         BeerDTO beerDTO = BeerDTO.builder().build();
 
         given(beerService.addBeer(any(BeerDTO.class))).willReturn(beerServiceImpl.listBeers().get(1));
 
-        mockMvc.perform(post("/api/v1/beer")
-                .accept(MediaType.APPLICATION_JSON)
+        MvcResult result =  mockMvc.perform(post("/api/v1/beer")
+                        .accept(MediaType.APPLICATION_JSON)
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(objectMapper.writeValueAsString(beerDTO)))
-                .andExpect(status().isBadRequest());
+                .andExpect(status().isBadRequest()).andReturn();
+        System.out.println(result.getResponse().getContentAsString());
     }
 
 

@@ -16,9 +16,12 @@ public class BeerDTO {
     private Integer version;
     @NotNull(message = "Cannot be null bro") @NotBlank (message = "Cannot be blank bro")
     private String beerName;
+    @NotNull
     private BeerStyle beerStyle;
+    @NotNull @NotBlank
     private String upc;
     private Integer quantityOnHand;
+    @NotNull
     private BigDecimal price;
     private LocalDateTime createdDate;
     private LocalDateTime updatedDate;
