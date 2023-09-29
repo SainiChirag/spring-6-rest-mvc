@@ -3,6 +3,7 @@ package com.chirag.spring6restmvc.controller;
 import com.chirag.spring6restmvc.exception.NotFoundException;
 import com.chirag.spring6restmvc.exception.UnknownException;
 import com.chirag.spring6restmvc.model.BeerDTO;
+import com.chirag.spring6restmvc.model.BeerStyle;
 import com.chirag.spring6restmvc.service.BeerService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -30,8 +31,11 @@ public class BeerController {
     }
 
     @RequestMapping(method = RequestMethod.GET)
-    public List<BeerDTO> getBeerList() {
-        return beerService.listBeers();
+    public List<BeerDTO> getBeerList(@RequestParam(required = false) String beerName,
+                                     @RequestParam(required = false) BeerStyle beerStyle,
+                                     @RequestParam(required = false) boolean showInventoryOnHand) {
+
+        return beerService.listBeers(beerName, beerStyle, false);
     }
 
     //@RequestMapping(method = RequestMethod.POST)
