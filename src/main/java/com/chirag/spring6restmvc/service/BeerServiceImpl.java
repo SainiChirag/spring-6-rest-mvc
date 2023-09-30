@@ -83,9 +83,6 @@ public class BeerServiceImpl implements BeerService {
                 .updatedDate(LocalDateTime.now())
                 .build();
 
-        System.out.println("I am here");
-
-
         this.beerMap.put(newBeer.getId(), newBeer);
         return newBeer;
     }

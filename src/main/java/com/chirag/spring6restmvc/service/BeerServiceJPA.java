@@ -47,7 +47,7 @@ public class BeerServiceJPA implements BeerService {
             beerList = beerRepository.findAll();
         }
 
-        if ( !showInventoryOnHand) {
+        if ( !showInventoryOnHand ) {
             for (Beer beer: beerList) {
                 beer.setQuantityOnHand(null);
             }
