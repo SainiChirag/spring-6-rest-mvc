@@ -22,6 +22,7 @@ import java.util.UUID;
 @RequestMapping("/api/v1/beer")
 public class BeerController {
 
+    public static final String BEER_PATH = "/api/v1/beer";
     private final BeerService beerService;
     @RequestMapping(method = RequestMethod.GET, value = "/{beerId}" )
     public ResponseEntity<BeerDTO> getBeerById(@PathVariable("beerId") UUID id) {
@@ -33,9 +34,11 @@ public class BeerController {
     @RequestMapping(method = RequestMethod.GET)
     public List<BeerDTO> getBeerList(@RequestParam(required = false) String beerName,
                                      @RequestParam(required = false) BeerStyle beerStyle,
-                                     @RequestParam(required = false) boolean showInventoryOnHand) {
+                                     @RequestParam(required = false) boolean showInventoryOnHand,
+                                     @RequestParam(required = false) Integer pageNumber,
+                                     @RequestParam(required = false) Integer pageSize) {
 
-        return beerService.listBeers(beerName, beerStyle, false);
+        return beerService.listBeers(beerName, beerStyle, showInventoryOnHand, 1, 25);
     }
 
     //@RequestMapping(method = RequestMethod.POST)
