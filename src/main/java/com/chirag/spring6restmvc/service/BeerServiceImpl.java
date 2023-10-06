@@ -14,7 +14,6 @@ import java.util.*;
 @Service
 @Slf4j
 public class BeerServiceImpl implements BeerService {
-
     Map<UUID, BeerDTO> beerMap;
     public BeerServiceImpl() {
         beerMap = new HashMap<>();
@@ -134,8 +133,5 @@ public class BeerServiceImpl implements BeerService {
         foundBeer.setUpdatedDate(LocalDateTime.now());
         beerMap.put(beerId, foundBeer);
         return foundBeer;
-
     }
-
-
 }

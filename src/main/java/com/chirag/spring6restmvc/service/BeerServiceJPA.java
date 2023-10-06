@@ -100,7 +100,6 @@ public class BeerServiceJPA implements BeerService {
           beerRepository.save(beer);
       }));
       return beerMapper.beerToBeerDto(beerRepository.findById(id).get());
-
     }
 
     @Override

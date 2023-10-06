@@ -20,6 +20,7 @@ import java.util.UUID;
 @RequestMapping("/api/v1/customer")
 public class CustomerController {
 
+    public static final String CUSTOMER_PATH = "/api/v1/customer";
     private final CustomerService customerService;
     @GetMapping
     public List<CustomerDTO> getAllCustomers() {
