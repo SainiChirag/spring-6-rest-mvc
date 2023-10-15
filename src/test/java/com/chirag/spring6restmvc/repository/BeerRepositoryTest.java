@@ -1,4 +1,4 @@
-package com.chirag.spring6restmvc.repositories;
+package com.chirag.spring6restmvc.repository;
 
 import com.chirag.spring6restmvc.entity.Beer;
 import com.chirag.spring6restmvc.model.BeerStyle;
