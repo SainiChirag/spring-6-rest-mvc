@@ -16,9 +16,18 @@ import java.util.UUID;
 @Getter
 @Setter
 @Builder
-@AllArgsConstructor
 @NoArgsConstructor
 public class BeerOrder {
+    public BeerOrder(UUID id, Long version, Timestamp createdDate, Timestamp lastModifiedDate, String customerRef, Customer customer, Set<BeerOrderLine> beerOrderLines) {
+        this.id = id;
+        this.version = version;
+        this.createdDate = createdDate;
+        this.lastModifiedDate = lastModifiedDate;
+        this.customerRef = customerRef;
+        setCustomer(customer);
+        this.beerOrderLines = beerOrderLines;
+    }
+
     @Id
     @GeneratedValue(generator = "UUID")
     @GenericGenerator(
@@ -45,6 +54,11 @@ public class BeerOrder {
 
     public boolean isNew(){
         return this.id == null;
+    }
+
+    public void setCustomer(Customer customer) {
+        this.customer = customer;
+        this.customer.getBeerOrders().add(this);
     }
 
 }
