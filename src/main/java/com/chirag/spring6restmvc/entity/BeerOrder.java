@@ -18,7 +18,7 @@ import java.util.UUID;
 @Builder
 @NoArgsConstructor
 public class BeerOrder {
-    public BeerOrder(UUID id, Long version, Timestamp createdDate, Timestamp lastModifiedDate, String customerRef, Customer customer, Set<BeerOrderLine> beerOrderLines) {
+    public BeerOrder(UUID id, Long version, Timestamp createdDate, Timestamp lastModifiedDate, String customerRef, Customer customer, Set<BeerOrderLine> beerOrderLines, BeerOrderShipment beerOrderShipment) {
         this.id = id;
         this.version = version;
         this.createdDate = createdDate;
@@ -26,6 +26,7 @@ public class BeerOrder {
         this.customerRef = customerRef;
         setCustomer(customer);
         this.beerOrderLines = beerOrderLines;
+        setBeerOrderShipment(beerOrderShipment);
     }
 
     @Id
@@ -59,6 +60,15 @@ public class BeerOrder {
     public void setCustomer(Customer customer) {
         this.customer = customer;
         this.customer.getBeerOrders().add(this);
+    }
+
+    @OneToOne(cascade = CascadeType.PERSIST)
+    private BeerOrderShipment beerOrderShipment;
+
+
+    public void setBeerOrderShipment(BeerOrderShipment shipment) {
+        this.beerOrderShipment = shipment;
+        shipment.setBeerOrder(this);
     }
 
 }

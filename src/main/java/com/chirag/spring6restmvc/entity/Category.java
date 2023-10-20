@@ -37,6 +37,7 @@ public class Category {
     @UpdateTimestamp
     private LocalDateTime lastModifiedDate;
 
+    @Builder.Default
     @ManyToMany
     @JoinTable
             (
