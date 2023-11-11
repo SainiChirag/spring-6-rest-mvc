@@ -60,7 +60,7 @@ public class BeerController {
 //            throw new NotFoundException();
 //        }
         // beer found
-        BeerDTO searchedBeer = beerService.updateBeer(id, beer);
+        BeerDTO searchedBeer = beerService.updateBeerById(id, beer);
 
         HttpHeaders headers = new HttpHeaders();
         headers.add("Location", "/api/v1/beer/" + searchedBeer.getId());

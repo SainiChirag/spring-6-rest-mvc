@@ -90,7 +90,7 @@ public class BeerServiceImpl implements BeerService {
     }
 
     @Override
-    public BeerDTO updateBeer(UUID id, BeerDTO newBeer) {
+    public BeerDTO updateBeerById(UUID id, BeerDTO newBeer) {
         BeerDTO existing = beerMap.get(id);
         existing.setBeerName(newBeer.getBeerName());
         existing.setVersion(newBeer.getVersion());
