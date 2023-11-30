@@ -2,6 +2,7 @@ package com.chirag.spring6restmvc.repository;
 
 import com.chirag.spring6restmvc.entity.Beer;
 import com.chirag.spring6restmvc.entity.BeerOrder;
+import com.chirag.spring6restmvc.entity.BeerOrderShipment;
 import com.chirag.spring6restmvc.entity.Customer;
 import com.chirag.spring6restmvc.repository.BeerOrderRepository;
 import com.chirag.spring6restmvc.repository.BeerRepository;
@@ -39,9 +40,14 @@ class BeerOrderRepositoryTest {
     @Test
     @Transactional
     void testBeerOrders(){
+
+
+        BeerOrderShipment beerOrderShipment = BeerOrderShipment.builder().trackingNumber("abc").build();
+
         BeerOrder beerOrder = BeerOrder.builder()
                 .customerRef("Test order")
                 .customer(testCustomer)
+                .beerOrderShipment(beerOrderShipment)
                 .build();
 
         BeerOrder savedBeerOrder = beerOrderRepository.save(beerOrder);

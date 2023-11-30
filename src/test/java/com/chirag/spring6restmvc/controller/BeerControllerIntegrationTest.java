@@ -26,6 +26,8 @@ import java.util.UUID;
 import static org.hamcrest.core.Is.is;
 import static org.junit.jupiter.api.Assertions.*;
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors.httpBasic;
+import static org.springframework.security.test.web.servlet.setup.SecurityMockMvcConfigurers.springSecurity;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
@@ -51,7 +53,9 @@ class BeerControllerIntegrationTest {
     MockMvc mockMvc;
     @BeforeEach
     void setup() {
-        mockMvc = MockMvcBuilders.webAppContextSetup(wac).build();
+        mockMvc = MockMvcBuilders.webAppContextSetup(wac)
+                .apply(springSecurity())
+                .build();
     }
     @Test
     void testListBeers(){
@@ -169,6 +173,7 @@ class BeerControllerIntegrationTest {
     @Test
     void listBeersByName() throws Exception {
         mockMvc.perform(get(BeerController.BEER_PATH)
+                        .with(httpBasic("user", "password"))
                         .queryParam("beerName", "Gillespie Brown Ale"))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.content.size()", is(1)));
@@ -178,6 +183,7 @@ class BeerControllerIntegrationTest {
     @Test
     void listBeersByStyle() throws Exception {
         mockMvc.perform(get(BeerController.BEER_PATH)
+                        .with(httpBasic("user", "password"))
                         .queryParam("beerStyle", "ALE"))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.content.size()", is(25)));
@@ -187,6 +193,7 @@ class BeerControllerIntegrationTest {
     @Test
     void listBeersByNameAndStyle() throws Exception {
         mockMvc.perform(get(BeerController.BEER_PATH)
+                        .with(httpBasic("user", "password"))
                         .queryParam("beerStyle", "ALE")
                 .queryParam("beerName", "Spirit Animal"))
                 .andExpect(status().isOk())
@@ -196,6 +203,7 @@ class BeerControllerIntegrationTest {
     @Test
     void listBeersByNameAndStyleNoBeer() throws Exception {
         mockMvc.perform(get(BeerController.BEER_PATH)
+                        .with(httpBasic("user", "password"))
                         .queryParam("beerStyle", "ALE")
                         .queryParam("beerName", "QWERTY"))
                 .andExpect(status().isOk())
@@ -206,13 +214,14 @@ class BeerControllerIntegrationTest {
     @Test
     void testListBeersAndNameShowInventoryPage2() throws Exception {
         mockMvc.perform(get(BeerController.BEER_PATH)
+                        .with(httpBasic("user", "password"))
                 .queryParam("beerName", "IPA")
                 .queryParam("beerStyle", BeerStyle.IPA.name())
                 .queryParam("showInventory", "true")
                 .queryParam("pageNumber", "2")
                 .queryParam("pageSize", "50"))
                 .andExpect(status().isOk())
-                .andExpect(jsonPath("$.content.size()", is(25)))
+                .andExpect(jsonPath("$.content.size()", is(50)))
                 .andExpect(jsonPath("$.content.[0].quantityOnHand").value(IsNull.nullValue()));
 
     }
