@@ -11,10 +11,10 @@ import org.springframework.http.MediaType;
 
 import java.util.Optional;
 
+import static com.chirag.spring6restmvc.controller.BeerControllerTest.jwtRequestPostProcessor;
 import static org.hamcrest.Matchers.hasSize;
 import static org.hamcrest.Matchers.is;
 import static org.mockito.BDDMockito.given;
-import static org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors.httpBasic;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
@@ -34,7 +34,8 @@ public class CustomerControllerTest {
         given(customerService.getAllCustomers()).willReturn(customerServiceImpl.getAllCustomers());
 
         mockMvc.perform(get("/api/v1/customer")
-                        .with(httpBasic("user", "password"))
+                   //     .with(httpBasic("user", "password"))
+                        .with(jwtRequestPostProcessor)
                 .accept(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk())
                 .andExpect(content().contentType(MediaType.APPLICATION_JSON))
@@ -49,7 +50,8 @@ public class CustomerControllerTest {
                 .willReturn(Optional.of(customer));
 
         mockMvc.perform(get("/api/v1/customer/" + customer.getId())
-                        .with(httpBasic("user", "password"))
+                    //    .with(httpBasic("user", "password"))
+                        .with(jwtRequestPostProcessor)
                 .accept(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk())
                 .andExpect(content().contentType(MediaType.APPLICATION_JSON))

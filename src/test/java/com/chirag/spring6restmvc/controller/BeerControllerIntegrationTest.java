@@ -20,14 +20,18 @@ import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.context.WebApplicationContext;
 
+import java.time.Instant;
 import java.util.List;
 import java.util.UUID;
 
+import static com.chirag.spring6restmvc.controller.BeerControllerTest.jwtRequestPostProcessor;
 import static org.hamcrest.core.Is.is;
 import static org.junit.jupiter.api.Assertions.*;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors.httpBasic;
+import static org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors.jwt;
 import static org.springframework.security.test.web.servlet.setup.SecurityMockMvcConfigurers.springSecurity;
+import static org.springframework.test.web.client.match.MockRestRequestMatchers.queryParam;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
@@ -173,7 +177,14 @@ class BeerControllerIntegrationTest {
     @Test
     void listBeersByName() throws Exception {
         mockMvc.perform(get(BeerController.BEER_PATH)
-                        .with(httpBasic("user", "password"))
+                     //   .with(httpBasic("user", "password"))
+                        .with(jwt().jwt(jwt->{
+                          jwt.claims(claims-> {
+                          claims.put("scope","message.read");
+                          claims.put("scope","message.write");
+                                  }).subject("messaging-client")
+                                  .notBefore(Instant.now().minusSeconds(5L));
+                        }))
                         .queryParam("beerName", "Gillespie Brown Ale"))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.content.size()", is(1)));
@@ -183,7 +194,8 @@ class BeerControllerIntegrationTest {
     @Test
     void listBeersByStyle() throws Exception {
         mockMvc.perform(get(BeerController.BEER_PATH)
-                        .with(httpBasic("user", "password"))
+                    //    .with(httpBasic("user", "password"))
+                        .with(jwtRequestPostProcessor)
                         .queryParam("beerStyle", "ALE"))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.content.size()", is(25)));
@@ -193,7 +205,8 @@ class BeerControllerIntegrationTest {
     @Test
     void listBeersByNameAndStyle() throws Exception {
         mockMvc.perform(get(BeerController.BEER_PATH)
-                        .with(httpBasic("user", "password"))
+                        //.with(httpBasic("user", "password"))
+                        .with(jwtRequestPostProcessor)
                         .queryParam("beerStyle", "ALE")
                 .queryParam("beerName", "Spirit Animal"))
                 .andExpect(status().isOk())
@@ -203,7 +216,8 @@ class BeerControllerIntegrationTest {
     @Test
     void listBeersByNameAndStyleNoBeer() throws Exception {
         mockMvc.perform(get(BeerController.BEER_PATH)
-                        .with(httpBasic("user", "password"))
+                       // .with(httpBasic("user", "password"))
+                        .with(jwtRequestPostProcessor)
                         .queryParam("beerStyle", "ALE")
                         .queryParam("beerName", "QWERTY"))
                 .andExpect(status().isOk())
@@ -214,7 +228,8 @@ class BeerControllerIntegrationTest {
     @Test
     void testListBeersAndNameShowInventoryPage2() throws Exception {
         mockMvc.perform(get(BeerController.BEER_PATH)
-                        .with(httpBasic("user", "password"))
+                      //  .with(httpBasic("user", "password"))
+                        .with(jwtRequestPostProcessor)
                 .queryParam("beerName", "IPA")
                 .queryParam("beerStyle", BeerStyle.IPA.name())
                 .queryParam("showInventory", "true")
